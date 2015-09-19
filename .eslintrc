@@ -1,0 +1,50 @@
+{
+    "useEslintrc": false,
+    "ecmaFeatures": {
+        "arrowFunctions": 1,
+        "blockBindings": 1,
+        "classes": 1,
+        "defaultParams": 1,
+        "destructuring": 1,
+        "forOf": 1,
+        "generators": 1,
+        "modules": 1,
+        "objectLiteralComputedProperties": 1,
+        "objectLiteralDuplicateProperties": 1,
+        "objectLiteralShorthandMethods": 1,
+        "objectLiteralShorthandProperties": 1,
+        "regexUFlag": 1,
+        "regexYFlag": 1,
+        "spread": 1,
+        "superInFunctions": 1,
+        "templateStrings": 1,
+        "unicodeCodePointEscapes": 1
+    },
+    "parser": "babel-eslint",
+    "env": {
+        "mocha": 1,
+        "node": 1,
+        "es6": 1
+    },
+    "rules": {
+        "no-multi-spaces": 0,
+        "no-bitwise": 1,
+        "camelcase": 1,
+        "curly": 1,
+        "eqeqeq": 1,
+        "wrap-iife": 1,
+        "indent": [2, 4],
+        "no-use-before-define": 1,
+        "new-cap": 1,
+        "no-caller": 1,
+        "quotes": [2, "single"],
+        "no-invalid-regexp": 1,
+        "no-undef": 1,
+        "no-unused-vars": 1,
+        "strict": [1, "global"],
+        "no-trailing-spaces": 1,
+        "no-underscore-dangle": 0,
+        "no-shadow": 0,
+        "no-loop-func": 0
+    }
+}
