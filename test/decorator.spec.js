@@ -66,6 +66,31 @@ suite('rqu - decorator', () => {
                     done();
                 }, done);
             });
+
+            test('defaults and config merge', (done) => {
+                rqu.defaults = {
+                    foo: 'bar',
+                    boo: 'boo'
+                };
+                let prep = (route, config) => {
+                    return {
+                        route: `/prepare-${config.foo}-${config.boo}`,
+                        config
+                    };
+                };
+                class Test {
+                    @rqu[method]('/prep', {boo: 'bob'}, prep)
+                    getAll(resp) {
+                        return resp;
+                    }
+                }
+                let t = new Test();
+                t.getAll()
+                .then((resp) => {
+                    expect(resp).to.equal(`${method}: prepare-bar-bob`);
+                    done();
+                }, done);
+            });
         });
     });
 });

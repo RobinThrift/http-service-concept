@@ -9,7 +9,8 @@ var rqu = {
     },
     isPromiseAlike(testee) {
         return testee instanceof rqu.Promise || typeof testee.then === 'function';
-    }
+    },
+    defaults: {}
 };
 
 ['GET', 'POST', 'PUT', 'DETELE', 'PATCH'].forEach((method) => {

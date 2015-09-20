@@ -1,3 +1,6 @@
+/// <reference path='./lodash.defaults.d.ts'/>
+
+import assignDefaults = require('lodash.defaults');
 
 type Descriptor = {
     value: Function
@@ -10,11 +13,13 @@ function prep(route, config) {
 
 function decoratorFactory(method, rqu) {
     return function(route, config = {}, prepare = prep) {
-        let {Promise, request, isPromiseAlike} = rqu; // we do this here, so we don't bind too early
+        let {Promise, request, isPromiseAlike, defaults} = rqu; // we do this here, so we don't bind too early
 
         if (Promise === null) {
             throw new Error('Please speciy a promise implementation');
         }
+
+        config = assignDefaults(config, defaults);
         
         // this is the actual decorator that will be called by the 'runtime'
         return (target: Function, name: string, descriptor: Descriptor) => {
