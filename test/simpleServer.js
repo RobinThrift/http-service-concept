@@ -3,11 +3,11 @@
 var http = require('http'),
     destroyable = require('server-destroy');
 
-var SimpleServer = function(port, responseFn) {
+var SimpleServer = function(port, responseFn, cb) {
     this.server = http.createServer(function(request, response) {
         responseFn(request, response);
     });
-    this.server.listen(port, 'localhost');
+    this.server.listen(port, 'localhost', 10, cb);
     
     destroyable(this.server);
 };

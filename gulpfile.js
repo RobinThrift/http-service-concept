@@ -1,71 +1,63 @@
 
-var gulp   = require('gulp'),
-    path   = require('path'),
+var yargs = require('yargs'),
+    join  = require('path').join,
+    gulp = require('gulp'),
     config = {
         paths: {
-            dest: 'dist',
-            scripts: ['src/*.js', 'src/**/*.js'],
-            tests: {
-                unit: ['test/*.spec.js', 'test/**/*.spec.js']
-            }
-        },
-        eslint: {
-            rcPath: path.join(__dirname + '/.eslintrc')
+            scripts: ['src/**/*.ts', 'src/*.ts'],
+            tests: ['test/*.spec.js'],
+            dest: 'dist'
         }
     },
-    args   = require('yargs')(process.argv)
-                .string('only')
-                .default('only', undefined)
-                .argv;
+    args = yargs
+            .default('only', undefined)
+            .argv;
 
-gulp.task('scripts:lint', function() {
-    var eslint = require('gulp-eslint');
-
+gulp.task('lint', function() {
+    var tslint = require('gulp-tslint');
     return gulp.src(config.paths.scripts)
-        .pipe(eslint({
-            configFile: config.eslint.rcPath
+        .pipe(tslint({
+            configuration: require('./tslint')
         }))
-        .pipe(eslint.format())
-        .pipe(eslint.failOnError())
+        .pipe(tslint.report('verbose'));
 });
 
-gulp.task('scripts:transpile', ['scripts:lint'], function() {
-    var babel = require('gulp-babel');
+gulp.task('compile', function() {
+    var tsc = require('gulp-typescript');
+    var tsStream = gulp.src(config.paths.scripts)
+        .pipe(tsc({
+            target: 'es3',
+            moduleResolution: 'node',
+            module: 'umd'
+        }));
 
-    return gulp.src(config.paths.scripts, {base: './src'})
-        .pipe(babel({
-            optional: ['runtime']
-        }))
-        .on('error', function(err) {
-            console.error(err);
-        })
-        .pipe(gulp.dest(config.paths.dest));
+    return tsStream.js.pipe(gulp.dest(config.paths.dest));
 });
 
-gulp.task('scripts', ['scripts:transpile']);
-
-gulp.task('scripts:watch', function() {
-    gulp.watch(config.paths.scripts, ['scripts']);
-});
-
-gulp.task('test:unit', ['scripts'], function() {
+gulp.task('test', ['compile'], function() {
     var mocha = require('gulp-mocha');
-
-    return gulp.src(config.paths.tests.unit, {read: false})
+    return gulp.src(config.paths.tests, {read: false})
         .pipe(mocha({
             reporter: 'spec',
             ui: 'tdd',
             grep: args.only,
-            require: [path.join(__dirname, '/test/babelRegister')]
+            require: [join(__dirname, 'test/babelRegister')]
         }));
 });
 
-gulp.task('test:unit:watch', function() {
-    gulp.watch(config.paths.scripts, ['test:unit']);
-    gulp.watch(config.paths.tests.unit, ['test:unit']);
+gulp.task('watch', function() {
+    gulp.watch(config.paths.scripts, ['lint', 'test']);;
+    gulp.watch(config.paths.tests, ['lint', 'test']);;
 });
 
-gulp.task('test', ['test:unit']);
+gulp.task('setup', function(done) {
+    var exec = require('child_process').exec;
+    exec(join(__dirname, 'node_modules/tsd/build/cli.js') + ' install', 
+         function(err, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+            done(err);
+        });
+});
 
-
-gulp.task('build', ['scripts:transpile']);
+gulp.task('build', ['lint', 'test']);

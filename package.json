@@ -1,33 +1,33 @@
 {
-  "name": "http-service-concept",
-  "version": "0.1.0",
-  "description": "Concept for HTTP Service Libraries",
+  "name": "rqu",
+  "version": "1.0.0",
+  "description": "Decorators for modern service classes",
   "main": "dist/index.js",
   "scripts": {
     "test": "gulp test"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:RobinThrift/http-service-concept.git"
+    "url": "git@github.com:RobinThrift/rqu.git"
   },
   "author": "Robin Thrift <thrift.d.robin@googlemail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/RobinThrift/http-service-concept/issues"
+    "url": "https://github.com/RobinThrift/rqu/issues"
   },
-  "homepage": "https://github.com/RobinThrift/http-service-concept",
+  "homepage": "https://github.com/RobinThrift/rqu",
   "devDependencies": {
     "babel-core": "^5.8.25",
-    "babel-eslint": "^4.1.3",
     "chai": "^3.2.0",
     "gulp": "^3.9.0",
-    "gulp-babel": "^5.2.1",
-    "gulp-eslint": "^1.0.0",
     "gulp-mocha": "^2.1.3",
+    "gulp-tslint": "^3.3.0-beta",
+    "gulp-typescript": "^2.9.0",
     "server-destroy": "^1.0.1",
+    "tsd": "^0.6.4",
     "yargs": "^3.25.0"
   },
   "dependencies": {
-    "node-fetch": "^1.3.2"
+    "q": "^1.4.1"
   }
 }
