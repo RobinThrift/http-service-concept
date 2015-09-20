@@ -78,6 +78,18 @@ import Q from 'q';
 rqu.Promise = Q.Promise;
 ```
 
+#### `isPromiseAlike` function
+You can set a custom `isPromiseAlike` function on the `rqu` object:
+
+```javascript
+import rqu from 'rqu';
+import Q from 'q';
+
+rqu.Promise = Q.Promise;
+rqu.isPromiseAlike = Q.isPromise;
+```
+
+
 ### `request` implementation
 rqu does not come with its own way of handling requests, that's up to you. To set your handler set `rqu.request` and make
 sure it returns a `Promise` (preferably the same type as set in `rqu.Promise`):
