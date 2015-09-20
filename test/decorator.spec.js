@@ -55,10 +55,8 @@ suite('rqu - decorator', () => {
                 };
                 class Test {
                     @rqu[method]('/prep', {}, prep)
-                    getAll(p1, p2, users) {
-                        let deferred = Q.defer();
-                        deferred.resolve(users);
-                        return deferred.promise.delay(10);
+                    getAll(p1, p2, resp) {
+                        return resp;
                     }
                 }
                 let t = new Test();
