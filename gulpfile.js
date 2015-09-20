@@ -23,15 +23,22 @@ gulp.task('lint', function() {
 });
 
 gulp.task('compile', function() {
-    var tsc = require('gulp-typescript');
-    var tsStream = gulp.src(config.paths.scripts)
+    var tsc = require('gulp-typescript'),
+        merge = require('merge2'),
+        tsStream;
+
+    tsStream = gulp.src(config.paths.scripts)
         .pipe(tsc({
             target: 'es3',
             moduleResolution: 'node',
-            module: 'umd'
+            module: 'umd',
+            declaration: true
         }));
 
-    return tsStream.js.pipe(gulp.dest(config.paths.dest));
+    return merge([
+        tsStream.dts.pipe(gulp.dest(config.paths.dest)),
+        tsStream.js.pipe(gulp.dest(config.paths.dest))
+    ]);
 });
 
 gulp.task('test', ['compile'], function() {
